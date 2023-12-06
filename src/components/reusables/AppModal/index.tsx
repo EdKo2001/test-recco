@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 
-import { Modal } from "antd";
+import { Modal, List } from "antd";
 import { InventoryType } from "../../../App";
 
 import styles from "./styles.module.css";
@@ -99,6 +99,12 @@ const AppModal: FC<AppModalProps> = ({
           </li>
         </ul>
       </div>
+      <List
+        header={"Username"}
+        bordered
+        dataSource={appUsers}
+        renderItem={(item) => <List.Item>{item}</List.Item>}
+      />
     </Modal>
   );
 };
