@@ -7,17 +7,11 @@ import styles from "./styles.module.css";
 
 interface AppModalProps {
   isModalOpen: boolean;
-  handleOk: () => void;
   handleCancel: () => void;
   appId: string;
 }
 
-const AppModal: FC<AppModalProps> = ({
-  isModalOpen,
-  handleOk,
-  handleCancel,
-  appId,
-}) => {
+const AppModal: FC<AppModalProps> = ({ isModalOpen, handleCancel, appId }) => {
   const [appOverview, setAppOverview] = useState<InventoryType>({
     appId: "",
     appName: "",
@@ -79,7 +73,7 @@ const AppModal: FC<AppModalProps> = ({
   }, [appId]);
 
   return (
-    <Modal title="" open={isModalOpen} footer={null}>
+    <Modal title="" open={isModalOpen} onCancel={handleCancel} footer={null}>
       <h2 className={styles.modal__title}>App Overview</h2>
       <div className={styles.modal__overview}>
         <ul className={styles.modal__list}>

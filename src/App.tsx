@@ -129,7 +129,6 @@ function App() {
       </Container>
       <AppModal
         isModalOpen={isAppModalOpen}
-        handleOk={() => setAppModalOpen(false)}
         handleCancel={() => setAppModalOpen(false)}
         appId={selectedAppModal}
       />
