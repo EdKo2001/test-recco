@@ -3,3 +3,12 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body {
+  background: #f9fafc;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
