@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 
-import { Space, Table, Tag } from "antd";
+import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
 import Header from "./components/Header";
 
 interface DataType {
-  key: number;
+  key: string;
   name: string;
   category: string;
   connector: { url: string; alt: string };
 }
 
-interface InventoryType {
+export interface InventoryType {
   appId: string;
   appName: string;
   appSources: string[];
@@ -69,19 +69,15 @@ function App() {
           totalCount: number;
         }> = await res.json();
 
-        const mappedRows: DataType[] = fetchedInventory.appRows.map(
-          (row, idx) => ({
-            key: idx + 1,
-            name: row.appName,
-            category: row.category,
-            connector: { url: "/images/logo.svg", alt: row.appSources[0] },
-          })
-        );
+        const mappedRows: DataType[] = fetchedInventory.appRows.map((row) => ({
+          key: row.appId,
+          name: row.appName,
+          category: row.category,
+          connector: { url: "/images/logo.svg", alt: row.appSources[0] },
+        }));
 
         setTotalCount(fetchedInventory.totalCount);
         setInventory(mappedRows);
-
-        console.log(fetchedInventory);
       } catch (error) {
         console.error(error);
       }
@@ -101,12 +97,19 @@ function App() {
           columns={columns}
           dataSource={inventory}
           loading={loading}
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: (event) => {
+                console.log(record.key);
+              },
+            };
+          }}
           pagination={{
             position: ["bottomCenter"],
             onChange: (page) => {
               setPageNumber(page - 1);
             },
-            onShowSizeChange: (cur, selectedPageSize) => {
+            onShowSizeChange: (_, selectedPageSize) => {
               setPageSize(selectedPageSize);
             },
             pageSize,
