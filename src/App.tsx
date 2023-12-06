@@ -46,14 +46,16 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   const [pageSize, setPageSize] = useState(25);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
     const getInventory = async () => {
       try {
         const res = await fetch("/api/v1/app-service/get-apps", {
           body: JSON.stringify({
-            pageNumber: 1,
-            pageSize: 25,
+            pageNumber,
+            pageSize,
           }),
           method: "PUT",
           mode: "cors",
@@ -76,6 +78,7 @@ function App() {
           })
         );
 
+        setTotalCount(fetchedInventory.totalCount);
         setInventory(mappedRows);
 
         console.log(fetchedInventory);
@@ -87,7 +90,7 @@ function App() {
     };
 
     getInventory();
-  }, []);
+  }, [pageSize, pageNumber]);
 
   return (
     <>
@@ -99,13 +102,17 @@ function App() {
           dataSource={inventory}
           loading={loading}
           pagination={{
-            onChange: () => {},
-            onShowSizeChange: (prop1, prop2) => {
-              console.log(prop1, prop2);
+            position: ["bottomCenter"],
+            onChange: (page) => {
+              setPageNumber(page - 1);
+            },
+            onShowSizeChange: (cur, selectedPageSize) => {
+              setPageSize(selectedPageSize);
             },
             pageSize,
             pageSizeOptions: ["25", "50"],
             showSizeChanger: true,
+            total: totalCount,
           }}
         />
         ;
