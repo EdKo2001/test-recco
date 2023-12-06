@@ -4,6 +4,10 @@ import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
 import Header from "./components/Header";
+import AppModal from "./components/reusables/AppModal";
+import Container from "./components/reusables/Container";
+
+import styles from "./App.module.css";
 
 interface DataType {
   key: string;
@@ -49,6 +53,9 @@ function App() {
   const [pageNumber, setPageNumber] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
 
+  const [isAppModalOpen, setAppModalOpen] = useState(false);
+  const [selectedAppModal, setSelectedAppModal] = useState("");
+
   useEffect(() => {
     const getInventory = async () => {
       try {
@@ -91,16 +98,17 @@ function App() {
   return (
     <>
       <Header />
-      <div>
-        <h1>App Inventory</h1>
+      <Container>
+        <h1 className={styles.title}>App Inventory</h1>
         <Table
           columns={columns}
           dataSource={inventory}
           loading={loading}
-          onRow={(record, rowIndex) => {
+          onRow={(record) => {
             return {
-              onClick: (event) => {
-                console.log(record.key);
+              onClick: () => {
+                setSelectedAppModal(record.key);
+                setAppModalOpen(true);
               },
             };
           }}
@@ -118,8 +126,13 @@ function App() {
             total: totalCount,
           }}
         />
-        ;
-      </div>
+      </Container>
+      <AppModal
+        isModalOpen={isAppModalOpen}
+        handleOk={() => setAppModalOpen(false)}
+        handleCancel={() => setAppModalOpen(false)}
+        appId={selectedAppModal}
+      />
     </>
   );
 }
