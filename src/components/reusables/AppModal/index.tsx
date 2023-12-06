@@ -83,7 +83,7 @@ const AppModal: FC<AppModalProps> = ({ isModalOpen, handleCancel, appId }) => {
           <li className={styles.modal__item}>
             Category: {appOverview.category}
           </li>
-          <li className={styles.modal__item}>Users: 7</li>
+          <li className={styles.modal__item}>Users: {appUsers.length}</li>
           <li className={styles.modal__item}>
             Connector:
             <img src="/images/logo.svg" alt={appOverview.appSources[0]} />
